@@ -21,6 +21,7 @@ namespace Infrastructure.Services
             var claims = new List<Claim>
         {
             new(ClaimTypes.NameIdentifier, userId.ToString()),
+            new(ClaimTypes.Name, email),
             new(ClaimTypes.Email, email)
         };
 
