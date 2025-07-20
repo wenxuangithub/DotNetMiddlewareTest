@@ -37,6 +37,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 
 builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddScoped<IExpenseService, ExpenseService>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
@@ -84,10 +85,19 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+
+
 app.UseHttpsRedirection();
 
-app.UseAuthentication();  
+app.UseMiddleware<Api.Middleware.ExceptionHandlingMiddleware>();
+app.UseMiddleware<Api.Middleware.HeaderSanitizerMiddleware>();
+app.UseMiddleware<Api.Middleware.ResponseWrapperMiddleware>();
+
+app.UseAuthentication();
 app.UseAuthorization();
-app.MapControllers();     
+
+app.MapControllers();
+app.Run();
+
 
 app.Run();
